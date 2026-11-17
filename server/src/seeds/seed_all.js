@@ -335,7 +335,7 @@ export async function seedAll({ clean = false } = {}) {
   console.log('✅ Complete database seeding finished successfully.');
 }
 
-if (process.argv[1].endsWith('seed_all.js') || process.argv[1].endsWith('seed_phase2.js')) {
+if (process.argv[1]?.endsWith('seed_all.js') || process.argv[1]?.endsWith('seed_phase2.js')) {
   seedAll().then(() => process.exit(0)).catch(err => {
     console.error('❌ Seeding failed:', err);
     process.exit(1);

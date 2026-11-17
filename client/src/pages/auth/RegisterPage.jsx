@@ -25,16 +25,58 @@ export function RegisterPage() {
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    let sanitizedValue = value;
+
+    // Disallow non-numeric characters for mobile and restrict to 10 digits
+    if (name === 'mobile') {
+      sanitizedValue = value.replace(/\D/g, '').slice(0, 10);
+    }
+
+    // Disallow non-numeric characters for pincode and restrict to 6 digits
+    if (name === 'pincode') {
+      sanitizedValue = value.replace(/\D/g, '').slice(0, 6);
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Logical Validation Checks
+    const trimmedName = formData.name.trim();
+    if (trimmedName.length < 2 || !/^[a-zA-Z0-9\u0900-\u097F\s.\-']+$/.test(trimmedName)) {
+      setError('Please enter a valid name (min 2 characters)');
+      return;
+    }
+
+    const mobileRegex = /^[6-9]\d{9}$/;
+    if (!mobileRegex.test(formData.mobile)) {
+      setError('Mobile number must be exactly 10 digits and start with 6, 7, 8, or 9');
+      return;
+    }
+
+    if (formData.pincode && !/^[1-9]\d{5}$/.test(formData.pincode)) {
+      setError('PIN code must be exactly 6 digits and cannot start with 0');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await register(formData);
+      await register({
+        ...formData,
+        name: trimmedName,
+        district: formData.district.trim(),
+        village: formData.village.trim(),
+      });
       navigate('/farmer', { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Registration failed');
@@ -93,9 +135,11 @@ export function RegisterPage() {
                   type="tel"
                   required
                   name="mobile"
+                  maxLength={10}
+                  inputMode="numeric"
                   value={formData.mobile}
                   onChange={handleChange}
-                  placeholder="10-digit mobile"
+                  placeholder="10-digit mobile (e.g. 9876543210)"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:outline-none"
                 />
               </div>
@@ -181,9 +225,11 @@ export function RegisterPage() {
               <input
                 type="text"
                 name="pincode"
+                maxLength={6}
+                inputMode="numeric"
                 value={formData.pincode}
                 onChange={handleChange}
-                placeholder="6-digit PIN"
+                placeholder="6-digit PIN (e.g. 226001)"
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:outline-none"
               />
             </div>

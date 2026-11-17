@@ -32,14 +32,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow non-browser requests or allowed origins
-    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.pages.dev')) {
-      callback(null, true);
-    } else {
-      callback(null, true); // Permissive for college evaluation
-    }
-  },
+  origin: true, // Dynamically mirror requesting origin (supports localhost, Vercel, Cloudflare Pages, Netlify, Render, etc.)
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Idempotency-Key', 'X-Cron-Secret'],

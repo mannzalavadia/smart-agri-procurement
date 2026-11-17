@@ -209,6 +209,27 @@ export async function createCenter(req, res, next) {
       });
     }
 
+    const pincodeRegex = /^[1-9]\d{5}$/;
+    if (!pincodeRegex.test(pincode.trim())) {
+      return res.status(400).json({
+        error: true,
+        code: 'INVALID_PINCODE',
+        message: 'Center PIN code must be exactly 6 digits and cannot start with 0',
+      });
+    }
+
+    if (contact_phone && contact_phone.trim()) {
+      const phoneClean = contact_phone.trim();
+      const phoneRegex = /^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$|^0\d{2,4}[-\s]?\d{6,8}$/;
+      if (!phoneRegex.test(phoneClean)) {
+        return res.status(400).json({
+          error: true,
+          code: 'INVALID_PHONE',
+          message: 'Contact phone must be a valid 10-digit mobile number or standard landline',
+        });
+      }
+    }
+
     const initialStatus = req.user.role === 'admin' ? 'approved' : 'pending_verification';
 
     const result = await withTransaction(async (client) => {

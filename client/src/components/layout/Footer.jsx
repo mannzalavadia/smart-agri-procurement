@@ -17,7 +17,7 @@ export function Footer() {
               <span>AgriProcure</span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">
-              {t('app_tagline')}. Built as an academic demonstration for college full-stack software engineering.
+              {t('app_tagline')}. Dedicated to modernizing agricultural procurement with fair prices and transparent queues.
             </p>
           </div>
 

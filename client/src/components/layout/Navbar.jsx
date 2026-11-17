@@ -48,20 +48,6 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-      {/* Top Demo Banner */}
-      <button
-        type="button"
-        onClick={() => setDemoModalOpen(true)}
-        className="w-full bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs py-1.5 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-colors border-b border-slate-800"
-      >
-        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>{t('common.demo_badge')}</span>
-        <span className="text-[10px] text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded font-bold border border-amber-400/30">
-          Virtual Clock Simulator (AT-20) ⚡
-        </span>
-      </button>
-
-      <DemoSimulatorModal isOpen={demoModalOpen} onClose={() => setDemoModalOpen(false)} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">

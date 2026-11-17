@@ -64,6 +64,6 @@ async function startServer() {
 // Export for testing
 export { app, server, io };
 
-if (process.argv[1].endsWith('server.js')) {
+if (process.argv[1]?.endsWith('server.js')) {
   startServer();
 }

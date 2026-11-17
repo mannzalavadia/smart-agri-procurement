@@ -266,7 +266,7 @@ export async function callNextInQueue(centerId, operatorId) {
        WHERE qe.center_id = $1 AND qe.queue_status = 'waiting'
        ORDER BY s.starts_at ASC, qe.checked_in_at ASC
        LIMIT 1
-       FOR UPDATE OF qe`,
+       FOR UPDATE`,
       [centerId]
     );
 

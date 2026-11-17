@@ -34,17 +34,61 @@ export function ProfilePage() {
   }, [user, language]);
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    let sanitizedValue = value;
+
+    // Disallow non-numeric characters for mobile and restrict to 10 digits
+    if (name === 'mobile') {
+      sanitizedValue = value.replace(/\D/g, '').slice(0, 10);
+    }
+
+    // Disallow non-numeric characters for pincode and restrict to 6 digits
+    if (name === 'pincode') {
+      sanitizedValue = value.replace(/\D/g, '').slice(0, 6);
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMsg('');
     setErrorMsg('');
+
+    // Logical Validation Checks
+    if (formData.name && formData.name.trim()) {
+      const trimmedName = formData.name.trim();
+      if (trimmedName.length < 2 || !/^[a-zA-Z0-9\u0900-\u097F\s.\-']+$/.test(trimmedName)) {
+        setErrorMsg('Please enter a valid name (min 2 characters)');
+        return;
+      }
+    }
+
+    if (formData.mobile && formData.mobile.trim()) {
+      const mobileRegex = /^[6-9]\d{9}$/;
+      if (!mobileRegex.test(formData.mobile.trim())) {
+        setErrorMsg('Mobile number must be exactly 10 digits and start with 6, 7, 8, or 9');
+        return;
+      }
+    }
+
+    if (formData.pincode && formData.pincode.trim()) {
+      if (!/^[1-9]\d{5}$/.test(formData.pincode.trim())) {
+        setErrorMsg('PIN code must be exactly 6 digits and cannot start with 0');
+        return;
+      }
+    }
+
     setLoading(true);
 
     try {
-      await updateUserProfile(formData);
+      await updateUserProfile({
+        ...formData,
+        name: formData.name ? formData.name.trim() : '',
+        district: formData.district ? formData.district.trim() : '',
+        village: formData.village ? formData.village.trim() : '',
+        pincode: formData.pincode ? formData.pincode.trim() : '',
+      });
       setLanguage(formData.preferred_language);
       setSuccessMsg(t('profile.saved_success'));
     } catch (err) {
@@ -120,6 +164,9 @@ export function ProfilePage() {
               <input
                 type="tel"
                 name="mobile"
+                maxLength={10}
+                inputMode="numeric"
+                placeholder="10-digit mobile (e.g. 9876543210)"
                 value={formData.mobile}
                 onChange={handleChange}
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:outline-none"
@@ -162,6 +209,9 @@ export function ProfilePage() {
               <input
                 type="text"
                 name="pincode"
+                maxLength={6}
+                inputMode="numeric"
+                placeholder="6-digit PIN (e.g. 226001)"
                 value={formData.pincode}
                 onChange={handleChange}
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:outline-none"

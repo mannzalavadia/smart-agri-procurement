@@ -1,6 +1,5 @@
 import pg from 'pg';
 import crypto from 'crypto';
-import { newDb } from 'pg-mem';
 import { ENV } from './env.js';
 
 const { Pool } = pg;
@@ -29,9 +28,10 @@ export async function initDb() {
     return pool;
   } else {
     if (ENV.NODE_ENV === 'production') {
-      throw new Error('FATAL: Production mode requires a valid PostgreSQL DATABASE_URL. In-memory pg-mem fallback is prohibited.');
+      console.warn('⚠️ [Production Warning]: DATABASE_URL not set. Running with self-contained in-memory database fallback. Provide a persistent PostgreSQL DATABASE_URL (e.g. from Neon.tech) to retain data across restarts.');
     }
     console.log('⚡ DATABASE_URL not set. Initializing self-contained in-memory PostgreSQL engine (pg-mem)...');
+    const { newDb } = await import('pg-mem');
     memDbInstance = newDb();
     
     // Register custom Postgres functions / types needed

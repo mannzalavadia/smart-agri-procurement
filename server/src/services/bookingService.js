@@ -21,8 +21,8 @@ export async function createBooking({
   idempotencyKey,
 }) {
   const quantity = parseFloat(estimatedQuintals);
-  if (isNaN(quantity) || quantity <= 0) {
-    const err = new Error('Estimated quantity must be greater than zero');
+  if (isNaN(quantity) || quantity <= 0 || quantity > 1000) {
+    const err = new Error('Estimated quantity must be a valid number between 0.5 and 1000 quintals');
     err.statusCode = 400;
     err.code = 'INVALID_QUANTITY';
     throw err;
@@ -217,7 +217,7 @@ export async function cancelBooking(bookingId, farmerId, reason = 'Cancelled by 
        FROM bookings b
        JOIN slots s ON b.slot_id = s.id
        WHERE b.id = $1
-       FOR UPDATE OF b`,
+       FOR UPDATE`,
       [bookingId]
     );
 

@@ -29,7 +29,7 @@ export async function recordProcurementIntake({
        JOIN centers cen ON b.center_id = cen.id
        LEFT JOIN farmer_profiles fp ON b.farmer_id = fp.user_id
        WHERE b.id = $1
-       FOR UPDATE OF b`,
+       FOR UPDATE`,
       [bookingId]
     );
 

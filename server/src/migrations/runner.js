@@ -61,7 +61,7 @@ export async function runMigrations() {
 }
 
 // Run directly if invoked from CLI
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && process.argv[1] === fileURLToPath(import.meta.url)) {
   runMigrations().then(() => process.exit(0)).catch(err => {
     console.error('❌ Migration failed:', err);
     process.exit(1);

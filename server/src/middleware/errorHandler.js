@@ -1,7 +1,9 @@
+import { ENV } from '../config/env.js';
+
 export function errorHandler(err, req, res, next) {
   console.error('⚠️ [ErrorHandler]:', err);
 
-  // Check for PostgreSQL check_violation constraint (code 23514) or capacity constraint
+  // PostgreSQL constraint conflicts → respond with 409
   if (
     err.code === '23514' ||
     err.message?.includes('check constraint') ||
@@ -16,11 +18,11 @@ export function errorHandler(err, req, res, next) {
   }
 
   const statusCode = err.statusCode || (res.statusCode !== 200 ? res.statusCode : 500);
-  
+
   res.status(statusCode).json({
     error: true,
     code: err.code || 'INTERNAL_SERVER_ERROR',
     message: err.message || 'An unexpected server error occurred',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    ...(ENV.NODE_ENV === 'development' && { stack: err.stack }),
   });
 }

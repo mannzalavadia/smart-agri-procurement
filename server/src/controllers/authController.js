@@ -45,6 +45,38 @@ export async function registerFarmer(req, res, next) {
       });
     }
 
+    // Validate mobile: exactly 10 digits
+    const mobileRegex = /^[6-9]\d{9}$/;
+    if (!mobileRegex.test(mobile.trim())) {
+      return res.status(400).json({
+        error: true,
+        code: 'INVALID_MOBILE',
+        message: 'Mobile number must be exactly 10 digits and start with 6-9',
+      });
+    }
+
+    // Validate pincode: exactly 6 digits (Indian PIN code) — optional field
+    if (pincode && pincode.trim()) {
+      const pincodeRegex = /^[1-9]\d{5}$/;
+      if (!pincodeRegex.test(pincode.trim())) {
+        return res.status(400).json({
+          error: true,
+          code: 'INVALID_PINCODE',
+          message: 'PIN code must be exactly 6 digits and cannot start with 0',
+        });
+      }
+    }
+
+    // Validate name: letters, numbers, spaces, dots, and hyphens allowed
+    const nameRegex = /^[a-zA-Z0-9\u0900-\u097F\s.\-']+$/;
+    if (!nameRegex.test(name.trim())) {
+      return res.status(400).json({
+        error: true,
+        code: 'INVALID_NAME',
+        message: 'Name can only contain letters, spaces, and dots',
+      });
+    }
+
     const normalizedEmail = email.toLowerCase().trim();
 
     // Check if email already exists

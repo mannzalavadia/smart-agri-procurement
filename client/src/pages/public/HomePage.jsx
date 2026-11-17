@@ -94,39 +94,6 @@ export function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Evaluator Quick Demo Accounts Box */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-100 rounded-2xl p-6 border border-slate-300/80 space-y-4">
-          <div className="flex items-center gap-2 text-slate-900 font-bold text-base">
-            <CheckCircle2 className="w-5 h-5 text-agri-600" />
-            <span>Academic Demonstration & Quick Evaluation Credentials</span>
-          </div>
-          <p className="text-xs text-slate-600">
-            For academic testing and review, the following pre-seeded test accounts can be used to log in and inspect role-based capabilities:
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-            <div className="bg-white p-4 rounded-xl border border-slate-200 text-xs space-y-1">
-              <span className="font-bold text-purple-700 uppercase tracking-wider block">Administrator</span>
-              <p className="text-slate-700"><span className="font-semibold">Email:</span> admin@agriprocure.local</p>
-              <p className="text-slate-700"><span className="font-semibold">Password:</span> Admin@12345</p>
-            </div>
-
-            <div className="bg-white p-4 rounded-xl border border-slate-200 text-xs space-y-1">
-              <span className="font-bold text-amber-700 uppercase tracking-wider block">Center Operator</span>
-              <p className="text-slate-700"><span className="font-semibold">Email:</span> operator.lucknow@agriprocure.local</p>
-              <p className="text-slate-700"><span className="font-semibold">Password:</span> Operator@12345</p>
-            </div>
-
-            <div className="bg-white p-4 rounded-xl border border-slate-200 text-xs space-y-1">
-              <span className="font-bold text-emerald-700 uppercase tracking-wider block">Farmer (Ramesh Kumar)</span>
-              <p className="text-slate-700"><span className="font-semibold">Email:</span> farmer.ramesh@agriprocure.local</p>
-              <p className="text-slate-700"><span className="font-semibold">Password:</span> Farmer@12345</p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

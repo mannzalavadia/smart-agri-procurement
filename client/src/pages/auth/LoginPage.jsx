@@ -40,12 +40,6 @@ export function LoginPage() {
     }
   };
 
-  const fillCredentials = (userEmail, userPass) => {
-    setEmail(userEmail);
-    setPassword(userPass);
-    setError('');
-  };
-
   return (
     <div className="max-w-md mx-auto my-8 p-4">
       <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg shadow-slate-200/50 space-y-6">
@@ -114,38 +108,6 @@ export function LoginPage() {
             )}
           </button>
         </form>
-
-        {/* Quick Demo Autofill Helpers (Dev mode only) */}
-        {import.meta.env.DEV && (
-          <div className="pt-2 border-t border-slate-100 space-y-2">
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">
-              Quick Auto-Fill (Dev Mode Only)
-            </p>
-            <div className="grid grid-cols-3 gap-2 text-xs">
-              <button
-                type="button"
-                onClick={() => fillCredentials('farmer.ramesh@agriprocure.local', 'Farmer@12345')}
-                className="py-1.5 px-2 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold hover:bg-emerald-100 text-[11px]"
-              >
-                Farmer
-              </button>
-              <button
-                type="button"
-                onClick={() => fillCredentials('operator.lucknow@agriprocure.local', 'Operator@12345')}
-                className="py-1.5 px-2 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 font-bold hover:bg-amber-100 text-[11px]"
-              >
-                Operator
-              </button>
-              <button
-                type="button"
-                onClick={() => fillCredentials('admin@agriprocure.local', 'Admin@12345')}
-                className="py-1.5 px-2 rounded-lg bg-purple-50 text-purple-800 border border-purple-200 font-bold hover:bg-purple-100 text-[11px]"
-              >
-                Admin
-              </button>
-            </div>
-          </div>
-        )}
 
         <div className="text-center text-xs text-slate-600">
           <span>{t('auth.no_account')} </span>

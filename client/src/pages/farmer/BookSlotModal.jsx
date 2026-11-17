@@ -58,6 +58,12 @@ export function BookSlotModal({ center, onClose }) {
     e.preventDefault();
     if (!selectedSlotId || !selectedCropId) return;
 
+    const q = parseFloat(quantity);
+    if (isNaN(q) || q <= 0 || q > 1000) {
+      setError('Estimated quantity must be between 0.5 and 1000 quintals');
+      return;
+    }
+
     setError('');
     setSubmitting(true);
 
@@ -66,7 +72,7 @@ export function BookSlotModal({ center, onClose }) {
         centerId: center.id,
         slotId: selectedSlotId,
         cropId: selectedCropId,
-        estimatedQuintals: parseFloat(quantity),
+        estimatedQuintals: q,
       };
 
       const res = await api.post('/bookings', payload);
@@ -194,7 +200,8 @@ export function BookSlotModal({ center, onClose }) {
                   </label>
                   <input
                     type="number"
-                    min="1"
+                    min="0.5"
+                    max="1000"
                     step="0.5"
                     required
                     value={quantity}

@@ -29,7 +29,7 @@ export async function updatePaymentStatus({
        JOIN procurement_records pr ON p.procurement_record_id = pr.id
        JOIN bookings b ON pr.booking_id = b.id
        WHERE p.id = $1
-       FOR UPDATE OF p`,
+       FOR UPDATE`,
       [paymentId]
     );
 
